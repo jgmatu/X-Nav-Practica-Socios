@@ -1,86 +1,134 @@
 const TITLE = 0, CONTENT = 2;
+const MYLINE = "myline", TIMELINE = "timeline", UPDATE = "update";
 
 function sociosUI() {
       $("body").html();
+
       request("socios.html", hSocios, hErr);
-
-      request("myline.json", setAccordionMyLine, hErr);
-      request("timeline.json", setAccordionTimeLine, hErr);
+      request("myline.json", handlerMessages(MYLINE), hErr);
+      request("timeline.json", handlerMessages(TIMELINE), hErr);
 }
 
-function setAccordionMyLine(json) {
-      var hMsg = function (data) {
-            var msg = $("#myline"),
-            src = $.trim(data),
-            html = $.parseHTML(src);
+function hSocios (data) {
+      setHTML(data);
+      $( "input" ).checkboxradio();
+      showEventsLine();
+}
 
-            for (var i = 0; i < json.length; i++) {
-                  if (json[i].autor != user.name) {
-                        continue;
+function setHTML(data) {
+      $("body").html(data);
+      $("#title").html("Welcome to socios " + user.name);
+      $(".avatar").attr("src", user.avatar);
+      $(".name").html(user.name);
+}
+
+function isInvalidTopic(id, autor, name) {
+      return (id == MYLINE && autor != name) || (id == TIMELINE && autor == name) ||
+                  (id == UPDATE && autor == name);
+}
+
+var handlerMessages = function(id) {
+      return function handlerJson(json) {
+            var hMsg = function (data) {
+                  var msg = $("#"+id),
+                  src = $.trim(data),
+                  messageHTML = $.parseHTML(src);
+
+                  for (var i = 0; i < json.length; i++) {
+                        if (isInvalidTopic(id, json[i].autor, user.name)) {
+                              continue;
+                        }
+                        var topic = newTopic(id, i);
+                        setMessageNodesInDOM(topic, messageHTML);
+                        setBackGrondTopic(topic);
+                        showTopicInMessageNodes(topic, json[i]);
                   }
-                  var t = "tm"+i;
-                  var c = "cm"+i;
-                  var nodes = getNodes(t, c, html);
-
-                  $("#myline").append(nodes);
-                  showTopic(t, c, json[i]);
+                  setAccordion(id);
             }
-            $("#myline").accordion({
-                  collapsible: true
-            });
-            $("#myline").hide();
+            request("message.html", hMsg, hErr);
       }
-      request("message.html", hMsg, hErr);
 }
 
-function setAccordionTimeLine(json) {
-      var hMsg = function (data) {
-            var msg = $("#timeline"),
-            src = $.trim(data),
-            html = $.parseHTML(src);
+function setAccordion(id) {
+      $("#"+id).accordion({
+            collapsible: true,
+            active: false,
+            heightStyle: "content"
+      });
+      $("#"+id).hide();
+}
 
-            for (var i = 0; i < json.length; i++) {
-                  if (json[i].autor == user.name) {
-                        continue;
-                  }
-                  var t = "tt"+i;
-                  var c = "ct"+i;
-                  var nodes = getNodes(t, c, html);
+function newTopic (id, i) {
+      return topic = {
+            i : id,
+            t : "t"+id+i,
+            c : "c"+id+i
+      };
+}
 
-                  $("#timeline").append(nodes);
-                  showTopic(t, c, json[i]);
-            }
-            $("#timeline").accordion({
-                  collapsible: true
-            });
-            $("#timeline").hide();
+function setBackGrondTopic (topic) {
+      if (topic.i == UPDATE) {
+            $("#"+topic.t).css('background-color', 'rgba(255, 0, 0 , 0.5)');
+            $("#"+topic.c).css('background-color', 'rgba(0, 0, 255 , 0.5)');
       }
-      request("message.html", hMsg, hErr);
+      if (topic.i == MYLINE || topic.i == TIMELINE) {
+            $("#"+topic.t).css('background-color', 'rgba(0, 0, 255, 0.5)');
+            $("#"+topic.c).css('background-color', 'rgba(0, 255, 0, 0.5)');
+      }
 }
 
-function showTopic(t, c, msg) {
-      $("#"+t).html(msg.autor);
-      $("#"+c + " .avatar").attr("src", msg.avatar);
-      $("#"+c + " .title").html("<h3 align='center'>" + msg.titulo + "</h3>");
+function showTopicInMessageNodes(topic, msg) {
+      $("#" + topic.t).html(msg.autor);
+      $("#" + topic.c + " .avatar").attr("src", msg.avatar);
+      $("#" + topic.c + " .title").html(msg.titulo);
 
-      // TODO : contenido oculto... con boton para mostrar...
-      $("#"+c + " .content").html(getContent(msg.contenido));
+      viewContent(topic.c, msg.contenido, msg.fecha);
 }
 
+function viewContent (c, content, date) {
+      var sContent = "#" + c + " .content";
+      var sDate    = "#" + c + " .date";
+      var sOpener  = "#" + c + " .opener";
+      var sCloser  = "#" + c + " .closer";
 
-function getNodes(idT, idC, html) {
+      $(sContent).append(getContent(content));
+      $(sDate).html("Date : " + date);
+
+      var effectShow = function() {
+            $(sContent).show( "bounce", {} , 500);
+            $(sDate).show( "bounce", {} , 500);
+      }
+
+      var effectHide = function() {
+            $(sContent).hide("bounce", {}, 500);
+            $(sDate).hide( "bounce", {} , 500);
+      }
+
+      $(sOpener).on("click", function(){
+            effectShow();
+      });
+
+      $(sCloser).on("click", function(){
+            effectHide();
+      })
+
+      $(sContent).hide();
+      $(sDate).hide();
+}
+
+function setMessageNodesInDOM(topic, html) {
       var aux = new Array(html.length);
 
       $.each(html, function(i ,el) {
             aux[i] = el.cloneNode(true);
             if (i == TITLE) {
-                  aux[i].setAttribute("id", idT);
+                  aux[i].setAttribute("id", topic.t);
             }
             if (i == CONTENT) {
-                  aux[i].setAttribute("id", idC);
+                  aux[i].setAttribute("id", topic.c);
             }
       });
-      return aux;
+      $("#"+topic.i).append(aux);
 }
 
 function getContent(content) {
@@ -91,36 +139,50 @@ function getContent(content) {
       return str;
 }
 
-function hSocios (data) {
-      setHTML(data);
-      $( "input" ).checkboxradio();
-      showEvents();
-}
+function showEventsLine() {
+      var showEffect = function (id) {
+            $( id ).show("drop", {}, 1000);
+      }
+      var hideEffect = function(id) {
+            $( id ).hide( "drop", {}, 1000);
+      }
 
-function showEvents() {
       showEffect("#timeline");
+
       $("#radio-1").click(function() {
           hideEffect("#myline");
           setTimeout(showEffect, 1100, "#timeline");
+          showDialog("#msgUpdate", showEffect);
       });
 
       $("#radio-2").click(function() {
           hideEffect("#timeline");
+          hideEffect("#update");
           setTimeout(showEffect, 1100, "#myline");
       });
+
+      $("#msgUpdate").hide();
 }
 
-function showEffect(id) {
-      $( id ).show("drop", {}, 1000);
-}
-
-function hideEffect(id) {
-      $( id ).hide( "drop", {}, 1000);
-}
-
-function setHTML(data) {
-      $("body").html(data);
-      $("#title").html("Welcome to socios " + user.name);
-      $(".avatar").attr("src", user.avatar);
-      $(".name").html(user.name);
+var isUpdated = false;
+function showDialog(id, showEffect) {
+      $( id ).dialog ({
+            resizable: false,
+            height: "auto",
+            width: 400,
+            modal: true,
+            buttons: {
+                  "Show messages update" : function() {
+                        $( this ).dialog( "close" );
+                        if (!isUpdated) {
+                              request("update.json", handlerMessages(UPDATE), hErr);
+                        }
+                        setTimeout(showEffect, 1100, "#update");
+                        isUpdated = true;
+                  },
+                  "Cancel" : function() {
+                        $( this ).dialog( "close" );
+                  }
+            }
+      });
 }

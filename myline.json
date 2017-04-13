@@ -22,16 +22,16 @@
 	"fecha": "06/06/2017"
 }, {
 	"autor": "Paula",
-	"avatar": "urosa.jpg",
+	"avatar": "urosa.png",
 	"titulo": "El trabajo duro tiene recompensa",
 	"contenido": [
 		"Agobiada en el trabajo pero con ganas de seguir mañana cuanto",
-		"mas trabajo mejor, el trabajo es salud"
+		"mas trabajo mejor, el trabajo es salud."
 	],
 	"fecha": "11/04/2017"
 }, {
 	"autor": "Javi",
-	"avatar": "chico.jpg",
+	"avatar": "chico.png",
 	"titulo": "Concierto de Duo kie",
 	"contenido": [
 		"El proximo concierto de duo kie será el ultimo",
@@ -40,7 +40,7 @@
 	"fecha": "12/04/2017"
 }, {
 	"autor": "Paula",
-	"avatar": "urosa.jpg",
+	"avatar": "urosa.png",
 	"titulo": "Con ganas de irme de vacaciones",
 	"contenido": [
 		"Esta semana santa no voy a ningun sitio,",
@@ -49,12 +49,12 @@
 	"fecha": "18/04/2017"
 }, {
 	"autor": "Javi",
-	"avatar": "chico.jpg",
+	"avatar": "chico.png",
 	"titulo": "Proyectos de programacion para verano o tfg",
 	"contenido": [
 		"Este verano puede que salga algo de trabajo,",
 		"algun proyecto de desarrollo para hacer de todas formas tengo",
-		"que ponerme con el tfg"
+		"que ponerme con el tfg."
 	],
 	"fecha": "30/05/2017"
 }]

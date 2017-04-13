@@ -12,7 +12,7 @@ function request (uri, hdone, herr) {
         var req = $.ajax({
                 type  : "GET",
                 url   : uri,
-                cache : false
+                cache : true
         });
         req.done(hdone);
         req.fail(herr);
