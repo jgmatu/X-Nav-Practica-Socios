@@ -1,0 +1,60 @@
+[{
+	"autor": "Draco",
+	"avatar": "dragon.png",
+	"titulo": "Dragones como mascotas?",
+	"contenido": [
+		"Pensemoslo, no podemos tener dragones cuando son pequeños",
+		" y son monos y no pensar que mas tarde creceran y los abandonaran,",
+		"hay que tener algo de concienza con los dragones, por favor no compren dragones",
+		"si no son responsables de saber que estan comprando... muchas gracias!"
+	],
+	"fecha": "03/05/2017"
+}, {
+	"autor": "Draco",
+	"avatar": "dragon.png",
+	"titulo": "Saca a tu dragon de paseo",
+	"contenido": [
+		"Irlanda patrocina la IX edicion de sesiones de vuelo en dragon,",
+		"prados verdes temperatura ideal para tu dragon y los mejores domadores",
+		"de dragones para enseñarte como educar a tu dragon mientras",
+		"os dais un paseo por los cielos y lagos de irlanda"
+	],
+	"fecha": "06/06/2017"
+}, {
+	"autor": "Paula",
+	"avatar": "urosa.jpg",
+	"titulo": "El trabajo duro tiene recompensa",
+	"contenido": [
+		"Agobiada en el trabajo pero con ganas de seguir mañana cuanto",
+		"mas trabajo mejor, el trabajo es salud"
+	],
+	"fecha": "11/04/2017"
+}, {
+	"autor": "Javi",
+	"avatar": "chico.jpg",
+	"titulo": "Concierto de Duo kie",
+	"contenido": [
+		"El proximo concierto de duo kie será el ultimo",
+		"se separan para trabajar por separado"
+	],
+	"fecha": "12/04/2017"
+}, {
+	"autor": "Paula",
+	"avatar": "urosa.jpg",
+	"titulo": "Con ganas de irme de vacaciones",
+	"contenido": [
+		"Esta semana santa no voy a ningun sitio,",
+		"para veranito una escapada a la playa! :)"
+	],
+	"fecha": "18/04/2017"
+}, {
+	"autor": "Javi",
+	"avatar": "chico.jpg",
+	"titulo": "Proyectos de programacion para verano o tfg",
+	"contenido": [
+		"Este verano puede que salga algo de trabajo,",
+		"algun proyecto de desarrollo para hacer de todas formas tengo",
+		"que ponerme con el tfg"
+	],
+	"fecha": "30/05/2017"
+}]
