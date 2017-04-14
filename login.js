@@ -1,4 +1,4 @@
-var user = "?";
+var auth = "?";
 
 $( document ).ready(function() {
         $("#select").hide();
@@ -12,7 +12,7 @@ function request (uri, hdone, herr) {
         var req = $.ajax({
                 type  : "GET",
                 url   : uri,
-                cache : true
+                cache : false
         });
         req.done(hdone);
         req.fail(herr);
@@ -31,13 +31,13 @@ function isValidAuth(data) {
         var email = $( "#inputEmail" ).val();
         var password = $( "#inputPassword" ).val();
 
-        for (var i = 0 ; i < data.length ; i++) {
-                if (email == data[i].email && password == data[i].password) {
-                        user = data[i];
-                        return true;
-                }
-        }
-        return false;
+      for (var i = 0 ; i < data.length ; i++) {
+            if (email == data[i].email && sha256(password) == data[i].password) {
+                  user = data[i];
+                  return true;
+            }
+      }
+      return false;
 }
 
 function hErr(jqXHR, textFail) {
