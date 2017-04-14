@@ -1,12 +1,15 @@
-# X-Nav-Practica-Socios
-Ejercicio de asignaturas de aplicaciones HTML5. Segunda práctica optativa. Socios.
+# Mejoras
 
-## Enunciado
+Se ha realizado la parte basica de la practica.
 
-Vamos a construir parte del interfaz de usuario de la aplicación Socios, una nueva red social. 
-En particular, vamos a representar en el navegador la información que nos va a llegar en varios documentos JSON. 
-Para simular lo suficiente para poder realizar la interfaz de usuario, estos documentos JSON serán ficheros estáticos 
-que se servirán al navegador con el resto de la aplicación, que estará compuesta por un fichero HTML, otro JavaScript y otro CSS. 
-Detalles del enunciado en el programa de la asignatura.
+Se ha añadido un sistema de  autentificacion de usuarios y se ha puesto hash
+sha256 a las password.
+
+Este metodo de encriptación !!!NO ES SEGURO¡¡¡, aunque es mejor que mandar las
+contraseñas de los usuarios en claro.
+
+Se ha usado bootstrap para dar un mejor diseño a la pagina web.
+
+Tambien se ha usado jquery, y jqueyUI para realizar la minipractica de socios.
 
 [Try](https://jgmatu.github.io/X-Nav-Practica-Socios/index.html)
