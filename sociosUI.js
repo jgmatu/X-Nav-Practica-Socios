@@ -3,16 +3,17 @@ const MYLINE = "myline", TIMELINE = "timeline", UPDATE = "update";
 
 function sociosUI() {
       $("body").html();
-
       request("socios.html", hSocios, hErr);
-      request("myline.json", handlerMessages(MYLINE), hErr);
-      request("timeline.json", handlerMessages(TIMELINE), hErr);
 }
 
 function hSocios (data) {
       setHTML(data);
       $( "input" ).checkboxradio();
-      showEventsLine();
+      setRadioButtons();
+
+      request("myline.json", handlerMessages(MYLINE), hErr);
+      request("timeline.json", handlerMessages(TIMELINE), hErr);
+      request("update.json", handlerMessages(UPDATE), hErr);
 }
 
 function setHTML(data) {
@@ -23,8 +24,9 @@ function setHTML(data) {
 }
 
 function isInvalidTopic(id, autor, name) {
-      return (id == MYLINE && autor != name) || (id == TIMELINE && autor == name) ||
-                  (id == UPDATE && autor == name);
+      return (id == MYLINE && autor != name) ||
+             (id == TIMELINE && autor == name) ||
+             (id == UPDATE && autor == name);
 }
 
 var handlerMessages = function(id) {
@@ -49,6 +51,27 @@ var handlerMessages = function(id) {
       }
 }
 
+function handlerUpdate(update) {
+      var total = numUpdate(update);
+
+      if (total == 0) {
+            return;
+      }
+      showDialogUpdateMessages(total);
+}
+
+function numUpdate(update) {
+      var total = 0;
+
+      for (var i = 0 ; i < update.length; i++) {
+            if (update[i].autor != user.name) {
+                  total = total + 1;
+            }
+      }
+      return total;
+}
+
+
 function setAccordion(id) {
       $("#"+id).accordion({
             collapsible: true,
@@ -69,41 +92,50 @@ function setAccordion(id) {
       $("#"+id).hide();
 }
 
-function newTopic (id, i) {
+function newTopic (i, idx) {
       return topic = {
-            i : id,
-            t : "t"+id+i,
-            c : "c"+id+i
+            id : i,
+            idT : "t"+i+idx,
+            idC : "c"+i+idx
       };
 }
 
 function setBackGrondTopic (topic) {
-      if (topic.i == UPDATE) {
-            $("#"+topic.t).css('background-color', 'rgba(255, 0, 0 , 0.5)');
-            $("#"+topic.c).css('background-color', 'rgba(0, 0, 255 , 0.5)');
+      if (topic.id == UPDATE) {
+            $("#"+topic.idT).css('background-color', 'rgba(255, 0, 0 , 0.2)');
+            $("#"+topic.idC).css('background-color', 'rgba(0, 0, 255 , 0.2)');
       }
-      if (topic.i == MYLINE || topic.i == TIMELINE) {
-            $("#"+topic.t).css('background-color', 'rgba(0, 0, 255, 0.5)');
-            $("#"+topic.c).css('background-color', 'rgba(0, 255, 0, 0.5)');
+      if (topic.id == MYLINE || topic.id == TIMELINE) {
+            $("#"+topic.idT).css('background-color', 'rgba(0, 0, 255, 0.2)');
+            $("#"+topic.idC).css('background-color', 'rgba(0, 255, 0, 0.2)');
+      }
+}
+
+function newContent (i, t, d) {
+      return content = {
+            idC   : i,
+            txt   : t,
+            date  : d
       }
 }
 
 function showTopicInMessageNodes(topic, msg) {
-      $("#" + topic.t).html(msg.autor);
-      $("#" + topic.c + " .avatar").attr("src", msg.avatar);
-      $("#" + topic.c + " .title").html(msg.titulo);
+      $("#" + topic.idT).html(msg.autor);
+      $("#" + topic.idC + " .avatar").attr("src", msg.avatar);
+      $("#" + topic.idC + " .title").html(msg.titulo);
 
-      viewContent(topic.c, msg.contenido, msg.fecha);
+      var content = newContent(topic.idC, msg.contenido, msg.fecha);
+      viewContent(content);
 }
 
-function viewContent (c, content, date) {
-      var sContent = "#" + c + " .content";
-      var sDate    = "#" + c + " .date";
-      var sOpener  = "#" + c + " .opener";
-      var sCloser  = "#" + c + " .closer";
+function viewContent (c) {
+      var sContent = "#" + c.idC + " .content";
+      var sDate    = "#" + c.idC + " .date";
+      var sOpener  = "#" + c.idC + " .opener";
+      var sCloser  = "#" + c.idC + " .closer";
 
-      $(sContent).append(getContent(content));
-      $(sDate).html("Date : " + date);
+      $(sContent).append(getContent(c.txt));
+      $(sDate).html("Date : " + c.date);
 
       var effectShow = function() {
             $(sContent).show( "bounce", {} , 500);
@@ -133,63 +165,58 @@ function setMessageNodesInDOM(topic, html) {
       $.each(html, function(i ,el) {
             aux[i] = el.cloneNode(true);
             if (i == TITLE) {
-                  aux[i].setAttribute("id", topic.t);
+                  aux[i].setAttribute("id", topic.idT);
             }
             if (i == CONTENT) {
-                  aux[i].setAttribute("id", topic.c);
+                  aux[i].setAttribute("id", topic.idC);
             }
       });
-      $("#"+topic.i).append(aux);
+      $("#"+topic.id).append(aux);
 }
 
 function getContent(content) {
       var str = "";
+
       for (var i = 0 ; i < content.length; i++) {
             str += " " + content[i] + "\n";
       }
       return str;
 }
 
-function showEventsLine() {
-      var showEffect = function (id) {
-            $( id ).show("drop", {}, 1000);
-      }
-      var hideEffect = function(id) {
-            $( id ).hide( "drop", {}, 1000);
-      }
+var showEffect = function ( id ) {
+      $( id ).show("drop", {}, 1000);
+}
+var hideEffect = function(id) {
+      $( id ).hide( "drop", {}, 1000);
+}
 
-      showEffect("#timeline");
-
+function setRadioButtons() {
       $("#radio-1").click(function() {
-          hideEffect("#myline");
-          setTimeout(showEffect, 1100, "#timeline");
-          showDialog("#msgUpdate", showEffect);
+            hideEffect("#"+MYLINE);
+            request("update.json", handlerUpdate, hErr);
+            setTimeout(showEffect, 1100, "#"+TIMELINE);
       });
 
       $("#radio-2").click(function() {
-          hideEffect("#timeline");
-          hideEffect("#update");
-          setTimeout(showEffect, 1100, "#myline");
+            hideEffect("#"+TIMELINE);
+            hideEffect("#update");
+            setTimeout(showEffect, 1100, "#"+MYLINE);
       });
-
       $("#msgUpdate").hide();
 }
 
-var isUpdated = false;
-function showDialog(id, showEffect) {
+function showDialogUpdateMessages(total) {
+      var id = "#msgUpdate";
+      $( id ).attr('title', "You have " + total + " new messages");
       $( id ).dialog ({
             resizable: false,
             height: "auto",
             width: 400,
             modal: true,
             buttons: {
-                  "Show messages update" : function() {
+                  "Show new messages" : function() {
                         $( this ).dialog( "close" );
-                        if (!isUpdated) {
-                              request("update.json", handlerMessages(UPDATE), hErr);
-                        }
-                        setTimeout(showEffect, 1100, "#update");
-                        isUpdated = true;
+                        showEffect("#update");
                   },
                   "Cancel" : function() {
                         $( this ).dialog( "close" );

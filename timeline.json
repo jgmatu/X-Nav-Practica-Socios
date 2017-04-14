@@ -1,4 +1,4 @@
-[{
+[ {
 	"autor": "Paula",
 	"avatar": "urosa.png",
 	"titulo": "El trabajo duro tiene recompensa",
@@ -59,4 +59,31 @@
 		"por los cielos y lagos de irlanda.s"
 	],
 	"fecha": "06/06/2017"
+}, {
+	"autor": "Paula",
+	"avatar": "urosa.png",
+	"titulo": "La Ludopatia en el juego y como salir de ella",
+	"contenido": [
+		"No nos damos cuenta, nuestro cerbro es un organo",
+		"reflejo que reacciona ante la informacion que recibe del exterior",
+		"el juego puede darnos una falsa sensacion de bien estar y extasis",
+		"que se paga con nuestro dinero y con el de la gente que nos quiere",
+		"hay cosas igual de excitantes mas baratas que nos hacen mas felices",
+		"o incluso gratuitas como ir a salir a correr o montar en bici pueden",
+		"ser actividades realmente satisfactorias tanto para el cuerpo como",
+		"para la mente."
+	],
+      "fecha" : "03/09/2017"
+}, {
+	"autor": "Javi",
+	"avatar": "chico.png",
+	"titulo": "El poder de la mente no hay limite",
+	"contenido": [
+		"La mente es un organo reflejo, hay que entrenarlo y",
+		"decirle rotundamente que no tiene limite aunque ella se encabezone",
+		"en decir lo contrario, debes de tener la fuerza de voluntad la pasion",
+		"y el sacrificio para pasar a la accion, levantarte temprano esta semana",
+		"santa ya! y seguir hacia adelante tfg practicas finales y esta."
+	],
+      "fecha" : "05/03/2019"
 }]
