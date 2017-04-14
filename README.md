@@ -12,4 +12,16 @@ Se ha usado bootstrap para dar un mejor diseño a la pagina web.
 
 Tambien se ha usado jquery, y jqueyUI para realizar la minipractica de socios.
 
+
+Los usuarios de la pagina web de socios son :
+
+user : paula@account.com
+password : 654321
+
+user : javi@account.com
+password : 123456
+
+user : 123@account.com
+password : dragon
+
 [Try](https://jgmatu.github.io/X-Nav-Practica-Socios/index.html)
